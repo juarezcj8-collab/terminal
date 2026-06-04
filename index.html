@@ -1,0 +1,3286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portafolio · Marketing · Diseño Web · Datos</title>
+
+  <!-- Fuentes -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #f0ebe1;
+      --gold:    #c9a84c;
+      --gold-dim: rgba(201, 168, 76, 0.3);
+      --dim:     #7a7060;
+      --dark:    #080808;
+      --dark-2:  #0f0f0f;
+      --border:  rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--cream);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+      cursor: none; /* cursor personalizado */
+    }
+
+    /* ─── CURSOR PERSONALIZADO ─────────────────────────────────────────────── */
+    #cursor {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      mix-blend-mode: difference;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.12s ease-out;
+    }
+    body:hover #cursor { opacity: 1; }
+
+    /* ─── GRAIN OVERLAY ────────────────────────────────────────────────────── */
+    #grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.28;
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ─── HERO SECTION ─────────────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* fondo */
+    #hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      will-change: opacity;
+    }
+    #hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    #hero-bg-veil {
+      position: absolute;
+      inset: 0;
+      background: rgba(8,8,8,0.68);
+    }
+    #hero-bg-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, #080808 100%);
+    }
+
+    /* imagen central expansiva */
+    #hero-media-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      will-change: width, height;
+      border-radius: 14px;
+      overflow: hidden;
+      /* sombra que crece con la expansión */
+      box-shadow: 0 0 0 1px var(--gold-dim), 0 40px 100px rgba(0,0,0,0.6);
+    }
+    #hero-media-wrap img {opacity: 1 !important;
+display: block !important;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #hero-media-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.18) 100%);
+      will-change: opacity;
+    }
+
+    /* textos sobre el hero */
+    #hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+      text-align: center;
+    }
+
+    #hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--cream);
+      text-shadow: 0 2px 50px rgba(0,0,0,0.7);
+      will-change: transform;
+    }
+
+    #hero-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold), transparent);
+      will-change: width, opacity;
+      transition: none;
+    }
+
+    #hero-role {
+      font-family: 'DM Mono', monospace;
+      font-size: clamp(0.6rem, 1.6vw, 0.95rem);
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      will-change: transform;
+    }
+
+    /* hint de scroll */
+    #scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      will-change: opacity;
+    }
+    #scroll-hint span {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    #scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse-line 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse-line {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50%       { transform: scaleY(0.4); opacity: 0.4; }
+    }
+
+    /* entrada inicial del hero */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    #hero-text { animation: fade-up 1s ease-out 0.3s both; }
+    #scroll-hint { animation: fade-up 0.8s ease-out 1.1s both; }
+
+    /* ─── CONTENIDO POST-EXPANSIÓN ─────────────────────────────────────────── */
+    #hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 80px 48px 120px;
+      max-width: 1200px;
+      margin: 0 auto;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(30px);
+    }
+    #hero-content.visible {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    /* tagline */
+    #hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 300;
+      color: var(--dim);
+      line-height: 1.65;
+      margin-bottom: 72px;
+      max-width: 520px;
+    }
+
+    /* disciplinas */
+    #disciplinas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 768px) {
+      #disciplinas { grid-template-columns: 1fr; }
+      #hero-content { padding: 60px 24px 100px; }
+    }
+
+    .disciplina {
+      padding: 40px 32px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      cursor: default;
+      transition: background 0.3s ease;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+    }
+    .disciplina:last-child { border-right: none; }
+    .disciplina:hover { background: rgba(201,168,76,0.04); }
+
+    /* línea dorada inferior al hover */
+    .disciplina::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      height: 1px;
+      width: 0;
+      background: var(--gold);
+      transition: width 0.4s ease;
+    }
+    .disciplina:hover::after { width: 100%; }
+
+    .disciplina.appear {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .disciplina-num {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .disciplina-titulo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--cream);
+      margin-bottom: 14px;
+    }
+
+    .disciplina-desc {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--dim);
+    }
+
+    /* CTA */
+    #hero-cta {
+      margin-top: 72px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease 0.5s, transform 0.5s ease 0.5s;
+    }
+    #hero-content.visible #hero-cta {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #hero-cta button {
+      background: none;
+      border: none;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0;
+    }
+    #hero-cta button:hover .cta-line { width: 56px; }
+
+    .cta-line {
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s ease;
+    }
+
+    /* ─── PRÓXIMAS ESCENAS (placeholders) ──────────────────────────────────── */
+    #genetica {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--dark-2);
+      border-top: 1px solid var(--border);
+    }
+    #genetica p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-style: italic;
+      color: var(--dim);
+    }
+  /* ── utilidad reveal ───────────────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── ESCENA 1 wrapper ──────────────────────────────────────────────────── */
+  #genetica {
+    min-height: auto;
+    display: block;
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 140px 0 160px;
+    overflow: hidden;
+  }
+
+  .g-container {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+  @media (max-width: 768px) {
+    .g-container { padding: 0 24px; }
+    #genetica { padding: 100px 0 120px; }
+  }
+
+  /* ── encabezado ─────────────────────────────────────────────────────────── */
+  .g-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .g-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .g-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 6vw, 5.2rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--cream);
+    margin-bottom: 0;
+    letter-spacing: -0.01em;
+  }
+  .g-title em {
+    font-style: italic;
+    color: var(--dim);
+  }
+
+  /* ── divisor ────────────────────────────────────────────────────────────── */
+  .g-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 64px 0;
+    position: relative;
+  }
+  .g-rule::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transition: width 1.2s ease;
+  }
+  .g-rule.visible::after { width: 40%; }
+
+  /* ── contexto (texto largo) ──────────────────────────────────────────────── */
+  .g-context-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .g-context-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .g-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding-top: 6px;
+  }
+
+  .g-body {
+      font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(240,235,225,0.75);
+  }
+
+  /* ── bloque problema / solución ─────────────────────────────────────────── */
+  .g-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    margin: 0;
+  }
+  @media (max-width: 768px) {
+    .g-two-col { grid-template-columns: 1fr; }
+  }
+
+  .g-card {
+    background: var(--dark);
+    padding: 48px 40px;
+    position: relative;
+  }
+  .g-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.5s ease;
+  }
+  .g-card:hover::after { width: 100%; }
+
+  .g-card-num {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: block;
+  }
+  .g-card-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .g-card-body {
+    font-size: 0.8rem;
+    line-height: 1.8;
+    color: var(--dim);
+  }
+  .g-card-body li {
+    list-style: none;
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .g-card-body li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* ── métricas ────────────────────────────────────────────────────────────── */
+  .g-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+  }
+  @media (max-width: 900px) {
+    .g-metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 500px) {
+    .g-metrics { grid-template-columns: 1fr 1fr; }
+  }
+
+  .g-metric {
+    background: var(--dark-2);
+    padding: 44px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .g-metric::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .g-metric:hover::before { opacity: 1; }
+
+  .g-metric-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .g-metric-value span {
+    color: var(--gold);
+    font-style: italic;
+  }
+  .g-metric-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* ── galería ──────────────────────────────────────────────────────────────── */
+  .g-gallery-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .g-gallery-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* grid principal: 1 grande + 2 pequeñas + 3 pequeñas */
+  .g-gallery {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+  align-items: start;
+}
+
+  .g-img {
+    overflow: hidden;
+    background: #141414;
+    position: relative;
+    cursor: none;
+  }
+.g-img:nth-child(1) { grid-column: span 7; aspect-ratio: auto; }
+.g-img:nth-child(2) { grid-column: span 5; aspect-ratio: auto; }
+.g-img:nth-child(3) { grid-column: span 5; aspect-ratio: auto; }
+.g-img:nth-child(4) { grid-column: span 4; aspect-ratio: auto; }
+.g-img:nth-child(5) { grid-column: span 4; aspect-ratio: auto; }
+.g-img:nth-child(6) { grid-column: span 4; aspect-ratio: auto; }
+
+.g-img:nth-child(2) img
+.g-img:nth-child(4) img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center center;
+}
+
+  @media (max-width: 900px) {
+    .g-gallery { grid-template-columns: 1fr 1fr; }
+    .g-img:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+    .g-img:nth-child(1) { grid-column: span 2; }
+  }
+  @media (max-width: 520px) {
+    .g-gallery { grid-template-columns: 1fr; }
+    .g-img:nth-child(n) { grid-column: span 1; }
+  }
+
+ .g-img {
+  overflow: hidden;
+  background: #141414;
+  position: relative;
+  cursor: none;
+}
+
+.g-img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  filter: grayscale(15%) brightness(0.9);
+}
+
+  /* placeholder cuando no hay imagen */
+.g-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #111;
+  border: 1px solid var(--border);
+  position: absolute;
+  inset: 0;
+}
+  .g-img-placeholder span {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .g-img-placeholder svg {
+    opacity: 0.2;
+  }
+  /* ocultar placeholder cuando la imagen carga */
+  .g-img img.loaded + .g-img-placeholder,
+  .g-img img:not([src=""]) + .g-img-placeholder { display: none; }
+
+  /* overlay hover en galería */
+  .g-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(201,168,76,0);
+    transition: background 0.4s ease;
+    pointer-events: none;
+  }
+  .g-img:hover::after { background: rgba(201,168,76,0.04); }
+#contacto {
+    background: var(--dark-2);
+    border-top: 1px solid var(--border);
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* resplandor de fondo centrado */
+  #contacto::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse at center,
+      rgba(201,168,76,0.04) 0%,
+      transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── área principal ────────────────────────────────────────────────────── */
+  .ct-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 768px) { .ct-main { padding: 90px 28px 60px; } }
+
+  /* etiqueta superior */
+  .ct-eyebrow {
+    font-size: 0.58rem;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    opacity: 0.8;
+  }
+  .ct-eyebrow::before,
+  .ct-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* título principal */
+  .ct-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1.08;
+    color: var(--cream);
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+    max-width: 800px;
+  }
+  .ct-titulo em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* subtítulo */
+  .ct-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--dim);
+    max-width: 540px;
+    margin-bottom: 64px;
+  }
+
+  /* ── botones ───────────────────────────────────────────────────────────── */
+  .ct-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 72px;
+  }
+
+  /* botón primario (correo) */
+  .ct-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 36px;
+    background: var(--gold);
+    color: var(--dark);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--gold);
+    cursor: none;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .ct-btn-primary:hover {
+    background: transparent;
+    color: var(--gold);
+    transform: translateY(-2px);
+  }
+  /* shimmer */
+  .ct-btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+  }
+  .ct-btn-primary:hover::after { left: 150%; }
+
+  /* botones secundarios */
+  .ct-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 28px;
+    background: transparent;
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    cursor: none;
+    transition: color 0.3s ease, border-color 0.3s ease,
+                background 0.3s ease, transform 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .ct-btn:hover {
+    color: var(--cream);
+    border-color: var(--gold-dim);
+    background: rgba(201,168,76,0.04);
+    transform: translateY(-2px);
+  }
+  .ct-btn::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.06), transparent);
+    transition: left 0.45s ease;
+  }
+  .ct-btn:hover::after { left: 150%; }
+
+  /* estado stagger inicial para animación */
+  .ct-btn-primary,
+  .ct-btn {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.5s ease,
+      transform 0.5s ease,
+      background 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .ct-btn-primary.appear,
+  .ct-btn.appear {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* hover no override transform cuando ya está visible */
+  .ct-btn-primary.appear:hover { transform: translateY(-2px); }
+  .ct-btn.appear:hover          { transform: translateY(-2px); }
+
+  /* ── correo directo ─────────────────────────────────────────────────────── */
+  .ct-email {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  .ct-email::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.35s ease;
+  }
+  .ct-email:hover { color: var(--cream); }
+  .ct-email:hover::after { width: 100%; }
+
+  /* ── separador central ──────────────────────────────────────────────────── */
+  .ct-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    z-index: 1;
+    margin: 0 48px;
+    width: calc(100% - 96px);
+    align-self: center;
+  }
+  .ct-rule::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    transition: width 1.4s ease;
+  }
+  .ct-rule.visible::after { width: 40%; }
+  @media (max-width: 768px) {
+    .ct-rule { margin: 0 24px; width: calc(100% - 48px); }
+  }
+
+  /* ── footer ─────────────────────────────────────────────────────────────── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 36px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  @media (max-width: 768px) {
+    footer {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 32px 24px;
+      gap: 16px;
+    }
+  }
+
+  .ft-firma {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(240,235,225,0.35);
+    letter-spacing: 0.05em;
+  }
+  .ft-firma span {
+    color: var(--gold);
+    opacity: 0.6;
+    margin: 0 6px;
+  }
+
+  .ft-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(120,110,100,0.4);
+  }
+
+  .ft-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .ft-nav a {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, color 0.3s ease;
+    cursor: none;
+  }
+  .ft-nav a:hover {
+    opacity: 1;
+    color: var(--cream);
+  }
+
+  /* detalle dorado final en el footer */
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 48px;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.3;
+  }
+
+  </style>
+  <style id="escena2-css">
+
+  /* ── wrapper principal ─────────────────────────────────────────────────── */
+  #diseno {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 140px 0 160px;
+    overflow: hidden;
+  }
+  @media (max-width: 768px) { #diseno { padding: 100px 0 120px; } }
+
+  /* ── filtro de categorías ──────────────────────────────────────────────── */
+  .d-filter {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    width: fit-content;
+    margin-bottom: 64px;
+    overflow: hidden;
+  }
+
+  .d-filter-btn {
+    background: none;
+    border: none;
+    border-right: 1px solid var(--border);
+    cursor: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 14px 24px;
+    transition: color 0.3s ease, background 0.3s ease;
+    position: relative;
+  }
+  .d-filter-btn:last-child { border-right: none; }
+  .d-filter-btn:hover { color: var(--cream); background: rgba(255,255,255,0.03); }
+  .d-filter-btn.active {
+    color: var(--dark);
+    background: var(--gold);
+  }
+  .d-filter-btn.active { color: var(--dark); }
+
+  /* ── intro de sección ──────────────────────────────────────────────────── */
+  .d-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 72px;
+  }
+  @media (max-width: 768px) {
+    .d-intro-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* ── categorías ────────────────────────────────────────────────────────── */
+  .d-category {
+    margin-bottom: 96px;
+    transition: opacity 0.4s ease;
+  }
+  .d-category.hidden {
+    display: none;
+  }
+
+  .d-category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .d-category-num {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .d-category-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .d-category-desc {
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--dim);
+    max-width: 480px;
+    margin-bottom: 32px;
+    margin-left: auto;
+  }
+
+  /* ── grids por categoría ───────────────────────────────────────────────── */
+
+  /* carruseles educativos: 2+2 cuadrado */
+  .d-grid-square {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+  }
+  @media (max-width: 900px) { .d-grid-square { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px)  { .d-grid-square { grid-template-columns: 1fr 1fr; } }
+
+  /* redes sociales: 3+3 con primera grande */
+  .d-grid-social {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 3px;
+  }
+  .d-grid-social .d-piece:nth-child(1) { grid-column: span 5; }
+  .d-grid-social .d-piece:nth-child(2) { grid-column: span 4; }
+  .d-grid-social .d-piece:nth-child(3) { grid-column: span 3; }
+  .d-grid-social .d-piece:nth-child(4) { grid-column: span 3; }
+  .d-grid-social .d-piece:nth-child(5) { grid-column: span 4; }
+  .d-grid-social .d-piece:nth-child(6) { grid-column: span 5; }
+  @media (max-width: 900px) {
+    .d-grid-social { grid-template-columns: repeat(2, 1fr); }
+    .d-grid-social .d-piece:nth-child(n) { grid-column: span 1; }
+    .d-grid-social .d-piece:nth-child(1) { grid-column: span 2; }
+  }
+  @media (max-width: 500px) {
+    .d-grid-social { grid-template-columns: 1fr 1fr; }
+    .d-grid-social .d-piece:nth-child(n) { grid-column: span 1; }
+    .d-grid-social .d-piece:nth-child(1) { grid-column: span 2; }
+  }
+
+  /* material institucional: masonry-like 5+4+3 */
+  .d-grid-inst {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 3px;
+  }
+  .d-grid-inst .d-piece:nth-child(1) { grid-column: span 4; }
+  .d-grid-inst .d-piece:nth-child(2) { grid-column: span 4; }
+  .d-grid-inst .d-piece:nth-child(3) { grid-column: span 4; }
+  .d-grid-inst .d-piece:nth-child(4) { grid-column: span 6; }
+  .d-grid-inst .d-piece:nth-child(5) { grid-column: span 3; }
+  .d-grid-inst .d-piece:nth-child(6) { grid-column: span 3; }
+  @media (max-width: 900px) {
+    .d-grid-inst { grid-template-columns: repeat(2, 1fr); }
+    .d-grid-inst .d-piece:nth-child(n) { grid-column: span 1; }
+    .d-grid-inst .d-piece:nth-child(4) { grid-column: span 2; }
+  }
+  @media (max-width: 500px) {
+    .d-grid-inst { grid-template-columns: 1fr 1fr; }
+    .d-grid-inst .d-piece:nth-child(n) { grid-column: span 1; }
+  }
+
+  /* ── pieza individual ──────────────────────────────────────────────────── */
+ .d-piece {
+  position: relative;
+  overflow: hidden;
+  background: #111;
+  aspect-ratio: 4 / 5;
+  cursor: none;
+}
+  /* algunas piezas más altas */
+  .d-grid-social .d-piece:nth-child(1),
+  .d-grid-inst .d-piece:nth-child(4) { aspect-ratio: 16/10; }
+
+  .d-piece img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s ease, filter 0.4s ease;
+  filter: grayscale(10%) brightness(0.88);
+  background: #111;
+}
+  .d-piece:hover img {
+  transform: none;
+  filter: grayscale(0%) brightness(1);
+}
+  /* Arreglo visual para galería de diseño */
+.d-grid-square,
+.d-grid-social,
+.d-grid-inst {
+  align-items: start;
+}
+
+.d-piece {
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+.d-piece img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  background: transparent;
+}
+
+.d-piece-placeholder {
+  display: none !important;
+}
+
+  /* overlay hover con número */
+  .d-piece-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8,8,8,0);
+    transition: background 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    pointer-events: none;
+  }
+  .d-piece:hover .d-piece-overlay {
+ background: rgba(201,168,76,0.08);
+}
+
+  .d-piece-num {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .d-piece:hover .d-piece-num {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ícono lupa al hover */
+  .d-piece-zoom {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+  }
+  .d-piece:hover .d-piece-zoom {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* placeholder sin imagen */
+  .d-piece-placeholder {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+  }
+  .d-piece-placeholder span {
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    opacity: 0.5;
+  }
+
+  /* ── lightbox ───────────────────────────────────────────────────────────── */
+  #d-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: rgba(8,8,8,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+    backdrop-filter: blur(8px);
+  }
+  #d-lightbox.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  #d-lightbox img {
+    max-width: 88vw;
+    max-height: 86vh;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    transform: scale(0.96);
+    transition: transform 0.35s ease;
+  }
+  #d-lightbox.open img { transform: scale(1); }
+
+  #d-lightbox-close {
+    position: absolute;
+    top: 28px;
+    right: 32px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    cursor: none;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  #d-lightbox-close:hover { color: var(--cream); border-color: var(--gold); }
+
+  /* ── línea de cierre ────────────────────────────────────────────────────── */
+  .d-closing {
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .d-closing-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .d-closing-text {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  /* ── wrapper ───────────────────────────────────────────────────────────── */
+  #datos {
+    background: var(--dark-2);
+    border-top: 1px solid var(--border);
+    padding: 140px 0 160px;
+    overflow: hidden;
+  }
+  @media (max-width: 768px) { #datos { padding: 100px 0 120px; } }
+
+  /* ── intro de disciplina ───────────────────────────────────────────────── */
+  .sql-intro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 80px;
+  }
+  @media (max-width: 768px) { .sql-intro { grid-template-columns: 1fr; gap: 20px; } }
+
+  /* ── tipos de análisis ─────────────────────────────────────────────────── */
+  .sql-tipos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 96px;
+  }
+  @media (max-width: 768px) { .sql-tipos { grid-template-columns: 1fr; } }
+
+  .sql-tipo {
+    background: var(--dark-2);
+    padding: 40px 36px;
+    position: relative;
+    transition: background 0.3s ease;
+  }
+  .sql-tipo:hover { background: rgba(201,168,76,0.03); }
+  .sql-tipo::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.45s ease;
+  }
+  .sql-tipo:hover::after { width: 100%; }
+
+  .sql-tipo-icon {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+
+  .sql-tipo-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 12px;
+    line-height: 1.1;
+  }
+
+  .sql-tipo-desc {
+    font-size: 0.76rem;
+    line-height: 1.75;
+    color: var(--dim);
+  }
+
+  /* ── bloque de código SQL ──────────────────────────────────────────────── */
+  .sql-queries-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .sql-queries-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .sql-queries-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+    margin-bottom: 96px;
+  }
+  @media (max-width: 900px) { .sql-queries-grid { grid-template-columns: 1fr; } }
+
+  /* una query ocupa las dos columnas */
+  .sql-query-block.wide { grid-column: span 2; }
+  @media (max-width: 900px) { .sql-query-block.wide { grid-column: span 1; } }
+
+  .sql-query-block {
+    background: #0b0b0b;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+  .sql-query-block:hover { border-color: var(--gold-dim); }
+
+  /* barra de título del editor */
+  .sql-query-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: #0f0f0f;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sql-query-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .sql-query-dots span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--border);
+    display: inline-block;
+  }
+  .sql-query-dots span:nth-child(1) { background: rgba(255,95,87,0.4); }
+  .sql-query-dots span:nth-child(2) { background: rgba(255,188,46,0.4); }
+  .sql-query-dots span:nth-child(3) { background: rgba(39,201,63,0.4); }
+
+  .sql-query-filename {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+  }
+
+  .sql-query-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.08);
+    padding: 3px 10px;
+    border: 1px solid var(--gold-dim);
+  }
+
+  /* código */
+  .sql-query-code {
+    padding: 28px 24px;
+    overflow-x: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.75;
+    color: #9b9080;
+    /* scrollbar sutil */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sql-query-code::-webkit-scrollbar { height: 3px; }
+  .sql-query-code::-webkit-scrollbar-track { background: transparent; }
+  .sql-query-code::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* sintaxis SQL coloreada */
+  .sk  { color: #c9a84c; }           /* keyword: SELECT, FROM, WHERE… */
+  .sf  { color: #a08060; }           /* function: COUNT, SUM, AVG… */
+  .ss  { color: #7a9e7e; }           /* string/value */
+  .sc  { color: #4a4a4a; font-style: italic; } /* comment */
+  .sn  { color: #7899b4; }           /* number / alias */
+
+  /* descripción de la query */
+  .sql-query-footer {
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.7rem;
+    line-height: 1.6;
+    color: var(--dim);
+  }
+
+  /* ── galería de capturas ───────────────────────────────────────────────── */
+  .sql-capturas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+  }
+  @media (max-width: 768px) { .sql-capturas-grid { grid-template-columns: 1fr; } }
+
+  .sql-captura {
+    position: relative;
+    overflow: hidden;
+    background: #0b0b0b;
+    border: 1px solid var(--border);
+    aspect-ratio: 16/10;
+    cursor: none;
+    transition: border-color 0.3s ease;
+  }
+  .sql-captura:hover { border-color: var(--gold-dim); }
+
+  .sql-captura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.55s ease, filter 0.4s ease;
+    filter: grayscale(20%) brightness(0.85) sepia(10%);
+  }
+  .sql-captura:hover img {
+    transform: scale(1.03);
+    filter: grayscale(0%) brightness(1) sepia(0%);
+  }
+
+  .sql-captura-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8,8,8,0);
+    transition: background 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 18px 20px;
+    pointer-events: none;
+  }
+  .sql-captura:hover .sql-captura-overlay { background: rgba(8,8,8,0.45); }
+
+  .sql-captura-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .sql-captura:hover .sql-captura-label { opacity: 1; transform: translateY(0); }
+
+  .sql-captura-placeholder {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .sql-captura-placeholder span {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+    opacity: 0.4;
+  }
+
+  /* ── stat row ──────────────────────────────────────────────────────────── */
+  .sql-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-top: 3px;
+  }
+  @media (max-width: 600px) { .sql-stats { grid-template-columns: 1fr; } }
+
+  .sql-stat {
+    background: var(--dark-2);
+    padding: 32px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .sql-stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .sql-stat-val em { color: var(--gold); font-style: italic; }
+
+  .sql-stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sql-stat-name {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .sql-stat-sub {
+    font-size: 0.65rem;
+    color: rgba(120,110,100,0.6);
+    line-height: 1.5;
+  }
+ /* ── wrapper ───────────────────────────────────────────────────────────── */
+  #sobre {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 140px 0 160px;
+    overflow: hidden;
+  }
+  @media (max-width: 768px) { #sobre { padding: 100px 0 120px; } }
+
+  /* ── layout principal: foto + texto ─────────────────────────────────────── */
+  .sb-main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 72px;
+    align-items: start;
+    margin-bottom: 88px;
+  }
+  @media (max-width: 900px) {
+    .sb-main {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  /* ── columna foto ────────────────────────────────────────────────────────── */
+  .sb-foto-wrap {
+    position: relative;
+  }
+
+  .sb-foto {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border);
+  }
+  .sb-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    filter: grayscale(15%) brightness(0.9);
+    transition: filter 0.5s ease, transform 0.6s ease;
+  }
+  .sb-foto:hover img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.03);
+  }
+
+  /* marco decorativo desplazado */
+  .sb-foto::before {
+    content: '';
+    position: absolute;
+    inset: -8px -8px 8px 8px;
+    border: 1px solid var(--gold-dim);
+    pointer-events: none;
+    z-index: -1;
+    transition: inset 0.4s ease;
+  }
+  .sb-foto:hover::before { inset: -12px -12px 12px 12px; }
+
+  /* placeholder si no hay foto */
+  .sb-foto-placeholder {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #111;
+  }
+  .sb-foto-placeholder span {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--dim);
+    opacity: 0.5;
+  }
+
+  /* etiqueta bajo la foto */
+  .sb-foto-label {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .sb-foto-nombre {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.03em;
+  }
+  .sb-foto-rol {
+    font-size: 0.6rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── columna texto ───────────────────────────────────────────────────────── */
+  .sb-texto {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-top: 4px;
+  }
+
+  .sb-bio {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.15rem, 1.9vw, 1.42rem);
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(240,235,225,0.78);
+  }
+
+  /* frase destacada */
+  .sb-frase {
+    border-left: 1px solid var(--gold);
+    padding-left: 28px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    font-weight: 300;
+    line-height: 1.65;
+    color: var(--dim);
+  }
+  .sb-frase em {
+    color: var(--cream);
+    font-style: normal;
+  }
+
+  /* ── enfoques ────────────────────────────────────────────────────────────── */
+  .sb-enfoques {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    margin-bottom: 88px;
+  }
+  @media (max-width: 900px) { .sb-enfoques { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 500px)  { .sb-enfoques { grid-template-columns: 1fr 1fr; } }
+
+  .sb-enfoque {
+    background: var(--dark);
+    padding: 32px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: background 0.3s ease;
+    position: relative;
+  }
+  .sb-enfoque:hover { background: rgba(201,168,76,0.035); }
+  .sb-enfoque::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.4s ease;
+  }
+  .sb-enfoque:hover::after { width: 100%; }
+
+  .sb-enfoque-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  .sb-enfoque-txt {
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: rgba(240,235,225,0.6);
+    line-height: 1.4;
+    transition: color 0.3s ease;
+  }
+  .sb-enfoque:hover .sb-enfoque-txt { color: var(--cream); }
+
+  /* ── habilidades ─────────────────────────────────────────────────────────── */
+  .sb-skills-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .sb-skills-titulo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  .sb-skills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 88px;
+  }
+
+  .sb-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    background: transparent;
+    cursor: default;
+    transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* categorías por color de dot */
+  .sb-chip[data-cat="web"]   .sb-chip-dot { background: #7899b4; }
+  .sb-chip[data-cat="data"]  .sb-chip-dot { background: var(--gold); }
+  .sb-chip[data-cat="mkt"]   .sb-chip-dot { background: #7a9e7e; }
+  .sb-chip[data-cat="tool"]  .sb-chip-dot { background: #9b8070; }
+
+  .sb-chip-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .sb-chip:hover {
+    color: var(--cream);
+    border-color: var(--gold-dim);
+    background: rgba(201,168,76,0.05);
+  }
+
+  /* shimmer al hover */
+  .sb-chip::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.07), transparent);
+    transition: left 0.45s ease;
+  }
+  .sb-chip:hover::after { left: 150%; }
+
+  /* ── leyenda de categorías ────────────────────────────────────────────────── */
+  .sb-leyenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: -68px;
+    margin-bottom: 88px;
+  }
+  .sb-leyenda-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .sb-leyenda-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── frase cierre ────────────────────────────────────────────────────────── */
+  .sb-cierre {
+    border-top: 1px solid var(--border);
+    padding-top: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+  @media (max-width: 768px) {
+    .sb-cierre { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .sb-cierre-frase {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.25;
+    color: var(--cream);
+    max-width: 680px;
+  }
+  .sb-cierre-frase em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .sb-cierre-deco {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .sb-cierre-linea {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+  .sb-cierre-linea:nth-child(2) { width: 32px; }
+  .sb-cierre-linea:nth-child(3) { width: 20px; }
+
+</style>
+</head>
+
+<body>
+
+  <!-- Cursor personalizado -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Textura de grano -->
+  <div id="grain"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- ESCENA 0 — HERO                                                        -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <section id="hero">
+
+    <!-- Fondo -->
+    <div id="hero-bg">
+      <!--
+        INSTRUCCIÓN DE IMAGEN:
+        Reemplaza el src con tu imagen de fondo.
+        Coloca el archivo en:  assets/hero-bg.jpg
+        Sugerencia:            usa seccion1-medicos.jpg o seccion2-medicos.jpg
+      -->
+      <img src="assets/hero-bg.jpg" alt="" aria-hidden="true" />
+      <div id="hero-bg-veil"></div>
+      <div id="hero-bg-vignette"></div>
+    </div>
+
+    <!-- Imagen central expansiva -->
+<div id="hero-media-wrap">
+  <img src="./assets/hero-media.jpg" alt="Proyecto principal" />
+  <div id="hero-media-overlay"></div>
+</div>      <!--
+        INSTRUCCIÓN DE IMAGEN:
+        Reemplaza el src con la imagen principal del proyecto.
+        Coloca el archivo en:  assets/hero-media.jpg
+        Sugerencia:            usa home.jpg
+      -->
+
+    <!-- Textos del hero -->
+    <div id="hero-text">
+      <!--
+        PERSONALIZACIÓN:
+        Cambia el contenido de estos dos elementos con tu nombre y tu título.
+      -->
+      <h1 id="hero-name">César Juárez</h1>
+      <div id="hero-divider"></div>
+      <p id="hero-role">Marketing · Diseño Web · Datos</p>
+    </div>
+
+    <!-- Hint de scroll -->
+    <div id="scroll-hint">
+      <span>scroll para expandir</span>
+      <div id="scroll-line"></div>
+    </div>
+
+    <!-- Contenido que aparece tras la expansión completa -->
+    <div id="hero-content">
+      <p id="hero-tagline">
+        Donde la estrategia de marca,<br />
+        la comunicación visual y el análisis de datos convergen.
+      </p>
+
+      <div id="disciplinas">
+        <div class="disciplina" style="transition-delay: 0.1s">
+          <span class="disciplina-num">01</span>
+          <h3 class="disciplina-titulo">Marketing</h3>
+          <p class="disciplina-desc">Estrategia de contenido, campañas y posicionamiento de marca con enfoque en resultados medibles.</p>
+        </div>
+        <div class="disciplina" style="transition-delay: 0.22s">
+          <span class="disciplina-num">02</span>
+          <h3 class="disciplina-titulo">Diseño Web</h3>
+          <p class="disciplina-desc">Identidad visual, UI/UX y comunicación gráfica institucional que conecta con audiencias reales.</p>
+        </div>
+        <div class="disciplina" style="transition-delay: 0.34s">
+          <span class="disciplina-num">03</span>
+          <h3 class="disciplina-titulo">Datos</h3>
+          <p class="disciplina-desc">SQL, análisis de comportamiento y decisiones estratégicas fundamentadas en métricas concretas.</p>
+        </div>
+      </div>
+
+      <div id="hero-cta">
+        <button onclick="document.getElementById('genetica').scrollIntoView({behavior:'smooth'})">
+          Ver proyecto principal
+          <span class="cta-line"></span>
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- ESCENA 1 — placeholder (se construye en el siguiente paso)             -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <section id="genetica">
+  <div class="g-container">
+
+    <!-- ── Encabezado ─────────────────────────────────────────────────────── -->
+    <div class="reveal">
+      <p class="g-eyebrow">Caso de estudio</p>
+      <h2 class="g-title">
+        Departamento de<br />
+        <em>Genética UANL</em>
+      </h2>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- ── Contexto ───────────────────────────────────────────────────────── -->
+    <div class="g-context-grid reveal">
+      <p class="g-label">Contexto</p>
+      <p class="g-body">
+        Participé en la creación y mejora del sitio web institucional del
+        Departamento de Genética de la UANL, incluyendo el diseño de materiales
+        digitales, la organización del contenido visual y el desarrollo de una
+        experiencia de usuario coherente con la identidad académica del departamento.
+      </p>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- ── Problema / Solución ────────────────────────────────────────────── -->
+    <div class="g-two-col reveal">
+
+      <div class="g-card">
+        <span class="g-card-num">Problema</span>
+        <h3 class="g-card-titulo">¿Qué necesitaba comunicar el departamento?</h3>
+        <ul class="g-card-body">
+          <li>Presencia digital desactualizada y sin cohesión visual.</li>
+          <li>Información académica dispersa y difícil de navegar.</li>
+          <li>Ausencia de materiales que comunicaran el valor científico del área.</li>
+          <li>Falta de una identidad gráfica consistente en canales digitales.</li>
+        </ul>
+      </div>
+
+      <div class="g-card">
+        <span class="g-card-num">Solución</span>
+        <h3 class="g-card-titulo">Diseño, estructura y experiencia</h3>
+        <ul class="g-card-body">
+          <li>Rediseño del sitio web institucional con jerarquía de contenido clara.</li>
+          <li>Sistema visual consistente: tipografía, color y composición.</li>
+          <li>Creación de materiales digitales para redes sociales y comunicación interna.</li>
+          <li>Organización de la arquitectura de información para facilitar la navegación.</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- ── Métricas / Resultados ──────────────────────────────────────────── -->
+    <div class="reveal" style="margin-bottom: 16px;">
+      <p class="g-eyebrow">Resultados</p>
+    </div>
+
+    <div class="g-metrics reveal">
+      <div class="g-metric">
+        <span class="g-metric-value">+<span>60</span>%</span>
+        <p class="g-metric-label">Claridad de contenido percibida</p>
+      </div>
+      <div class="g-metric">
+        <span class="g-metric-value"><span>3</span> meses</span>
+        <p class="g-metric-label">De diagnóstico a entrega</p>
+      </div>
+      <div class="g-metric">
+        <span class="g-metric-value"><span>12</span>+</span>
+        <p class="g-metric-label">Materiales digitales creados</p>
+      </div>
+      <div class="g-metric">
+        <span class="g-metric-value"><span>1</span> marca</span>
+        <p class="g-metric-label">Identidad visual unificada</p>
+      </div>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- ── Galería ─────────────────────────────────────────────────────────── -->
+    <p class="g-gallery-label reveal">Evidencia visual</p>
+
+    <div class="g-gallery reveal">
+
+      <!--
+        INSTRUCCIÓN:
+        Coloca tus imágenes en  assets/genetica/
+        Renombra los archivos como:
+          slide-1.jpg → seccion1-medicos.jpg
+          slide-2.jpg → seccion2-medicos.jpg
+          slide-3.jpg → seccion3-medicos.jpg
+          slide-4.jpg → medicos5.jpg
+          slide-5.jpg → medicos6.jpg
+          slide-6.jpg → catalogo-servicios.jpg
+
+        Los placeholders se muestran automáticamente si la imagen no carga.
+      -->
+
+      <div class="g-img">
+        <img src="assets/hero-media.jpg" alt="Sitio web Genética UANL" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>seccion1-medicos.jpg</span>
+        </div>
+      </div>
+
+      <div class="g-img">
+        <img src="assets/hero-bg.jpg" alt="Sección del sitio" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>slide-2.jpg</span>
+        </div>
+      </div>
+
+      <div class="g-img">
+        <img src="assets/seccion1-medicos.jpg" alt="Materiales digitales" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>slide-3.jpg</span>
+        </div>
+      </div>
+
+      <div class="g-img">
+        <img src="assets/seccion2-medicos.jpg" alt="Identidad visual" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>slide-4.jpg</span>
+        </div>
+      </div>
+
+      <div class="g-img">
+        <img src="assets/medicos5.jpg" alt="Comunicación digital" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>slide-5.jpg</span>
+        </div>
+      </div>
+
+      <div class="g-img">
+        <img src="assets/medicos6.jpg" alt="Catálogo de servicios" loading="lazy" onerror="this.style.display='none'" />
+        <div class="g-img-placeholder">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" color="#c9a84c"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>slide-6.jpg</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- / galería -->
+
+  </div>
+  <!-- / g-container -->
+   <div id="d-lightbox">
+  <button id="d-lightbox-close">cerrar</button>
+  <img id="d-lightbox-img" src="" alt="" />
+</div>
+
+<section id="diseno">
+  <div class="g-container">
+
+    <!-- Encabezado -->
+    <div class="reveal">
+      <p class="g-eyebrow">Diseño y Comunicación Visual</p>
+      <h2 class="g-title">
+        Piezas que<br />
+        <em>comunican</em>
+      </h2>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- Intro -->
+    <div class="d-intro-grid reveal">
+      <p class="g-label">Contexto</p>
+      <p class="g-body">
+        He desarrollado contenido visual para redes sociales, comunicación
+        institucional y materiales digitales en distintos contextos: desde
+        campañas educativas hasta identidades de marca. Cada pieza parte
+        de un objetivo de comunicación concreto.
+      </p>
+    </div>
+
+    <!-- Filtro -->
+    <div class="reveal">
+      <div class="d-filter">
+        <button class="d-filter-btn active" data-filter="all">Todos</button>
+        <button class="d-filter-btn" data-filter="carruseles">Carruseles educativos</button>
+        <button class="d-filter-btn" data-filter="redes">Redes sociales</button>
+        <button class="d-filter-btn" data-filter="institucional">Material institucional</button>
+      </div>
+    </div>
+
+    <!-- ── Categoría 1: Carruseles educativos ─────────────────────────────── -->
+    <div class="d-category reveal" data-category="carruseles">
+      <div class="d-category-header">
+        <span class="d-category-num">01</span>
+        <h3 class="d-category-title">Carruseles educativos</h3>
+      </div>
+      <p class="d-category-desc">
+        Secuencias visuales diseñadas para comunicar conceptos de manera
+        progresiva. Tipografía clara, jerarquía definida y coherencia entre slides.
+      </p>
+
+      <div class="d-grid-square">
+        <div class="d-piece" data-src="assets/carrusel1-slide1.jpg">
+          <img src="assets/carrusel1-slide1.jpg" alt="Carrusel educativo slide 1" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span>carrusel1-slide1.jpg</span>
+          </div>
+          <div class="d-piece-overlay"><span class="d-piece-num">01 / 04</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+
+        <div class="d-piece" data-src="assets/carrusel1-slide2">
+          <img src="assets/carrusel1-slide2.jpg" alt="Carrusel educativo slide 2" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span>carrusel-a-2</span>
+          </div>
+          <div class="d-piece-overlay"><span class="d-piece-num">02 / 04</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+
+        <div class="d-piece" data-src="assets/carrusel2-slide1.png">
+          <img src="assets/carrusel2-slide1.png" alt="Carrusel educativo slide 3" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span>carrusel-a-3</span>
+          </div>
+          <div class="d-piece-overlay"><span class="d-piece-num">03 / 04</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+
+        <div class="d-piece" data-src="assets/carrusel2-slide2.jpg">
+          <img src="assets/carrusel2-slide2.png" alt="Carrusel educativo slide 4" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            <span>carrusel-a-4</span>
+          </div>
+          <div class="d-piece-overlay"><span class="d-piece-num">04 / 04</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Categoría 2: Redes sociales ────────────────────────────────────── -->
+    <div class="d-category reveal" data-category="redes">
+      <div class="d-category-header">
+        <span class="d-category-num">02</span>
+        <h3 class="d-category-title">Diseño para redes sociales</h3>
+      </div>
+      <p class="d-category-desc">
+        Piezas diseñadas para entornos de alta competencia visual.
+        Composición rápida de leer, paleta consistente y mensaje claro.
+      </p>
+
+      <div class="d-grid-social">
+        <div class="d-piece" data-src="assets/IMG_6733.JPG">
+          <img src="assets/IMG_6733.JPG" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-1</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">01 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/post1.png">
+          <img src="assets/post1.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-2</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">02 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/04 Medico Aliado.png">
+          <img src="assets/04 Medico Aliado.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-3</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">03 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/1. png">
+          <img src="assets/1.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-4</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">04 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/06MARENFERMEDADESRARAS.png">
+          <img src="assets/06MARENFERMEDADESRARAS.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-5</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">05 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/01 Dra. Graciela Arelí López Uriarte (1).png">
+          <img src="assets/01 Dra. Graciela Arelí López Uriarte (1).png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>b-6</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">06 / 06</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Categoría 3: Material institucional ────────────────────────────── -->
+    <div class="d-category reveal" data-category="institucional">
+      <div class="d-category-header">
+        <span class="d-category-num">03</span>
+        <h3 class="d-category-title">Material institucional</h3>
+      </div>
+      <p class="d-category-desc">
+        Materiales formales para organismos académicos y corporativos.
+        Estructura editorial clara, identidad visual coherente y tono profesional.
+      </p>
+
+      <div class="d-grid-inst">
+        <div class="d-piece" data-src="assets/duchenne.png">
+          <img src="assets/duchenne.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-1</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">01 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/errores.png">
+          <img src="assets/errores.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-2</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">02 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/HUNTINGTON">
+          <img src="assets/HUNTINGTON (2).png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-3</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">03 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/huntin.png">
+          <img src="assets/huntin.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-4</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">04 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/pertaje.png">
+          <img src="assets/pertaje.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-5</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">05 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/peritaje2.png">
+          <img src="assets/peritaje2.png" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>c-6</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">06 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+        <div class="d-piece" data-src="assets/">
+          <img src="assets/" alt="" loading="lazy" onerror="this.style.display='none'" />
+          <div class="d-piece-placeholder"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>post-1</span></div>
+          <div class="d-piece-overlay"><span class="d-piece-num">07 / 07</span></div>
+          <div class="d-piece-zoom"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea de cierre -->
+    <div class="d-closing reveal">
+      <div class="d-closing-line"></div>
+      <span class="d-closing-text">fin de piezas visuales</span>
+      <div class="d-closing-line"></div>
+    </div>
+
+  </div>
+  <section id="datos">
+  <div class="g-container">
+
+    <!-- Encabezado -->
+    <div class="reveal">
+      <p class="g-eyebrow">Capa técnica</p>
+      <h2 class="g-title">
+        SQL y Análisis<br />
+        <em>de Datos</em>
+      </h2>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- Intro -->
+    <div class="sql-intro reveal">
+      <p class="g-label">Enfoque</p>
+      <p class="g-body">
+        El análisis de datos no es una habilidad separada de la comunicación —
+        es lo que permite tomar decisiones con fundamento. Trabajo con SQL para
+        extraer, transformar y leer comportamientos en bases de datos,
+        traduciendo resultados en decisiones de marketing y diseño.
+      </p>
+    </div>
+
+    <!-- Tipos de análisis -->
+    <div class="sql-tipos reveal">
+
+      <div class="sql-tipo">
+        <div class="sql-tipo-icon">
+          <!-- ícono: tabla / base de datos -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/>
+            <path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/>
+          </svg>
+        </div>
+        <h3 class="sql-tipo-titulo">Consultas y extracción</h3>
+        <p class="sql-tipo-desc">
+          Escritura de queries complejas con JOINs, subconsultas y
+          funciones de agregación para extraer insights de bases de datos relacionales.
+        </p>
+      </div>
+
+      <div class="sql-tipo">
+        <div class="sql-tipo-icon">
+          <!-- ícono: filtro -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+        </div>
+        <h3 class="sql-tipo-titulo">Filtrado y segmentación</h3>
+        <p class="sql-tipo-desc">
+          Segmentación de audiencias y registros por comportamiento,
+          fechas y condiciones específicas para análisis de marketing.
+        </p>
+      </div>
+
+      <div class="sql-tipo">
+        <div class="sql-tipo-icon">
+          <!-- ícono: tendencia -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <h3 class="sql-tipo-titulo">Métricas y tendencias</h3>
+        <p class="sql-tipo-desc">
+          Cálculo de KPIs, tasas de conversión y tendencias temporales
+          que alimentan estrategias de contenido y campañas.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Queries SQL reales -->
+    <p class="sql-queries-label reveal">Evidencia técnica</p>
+
+    <div class="sql-queries-grid reveal">
+
+      <!-- Query 1: JOIN + filtro -->
+      <div class="sql-query-block">
+        <div class="sql-query-bar">
+          <div class="sql-query-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="sql-query-filename">analisis_pacientes.sql</span>
+          <span class="sql-query-tag">JOIN</span>
+        </div>
+        <pre class="sql-query-code"><span class="sc">-- Pacientes con consultas en el último trimestre</span>
+<span class="sk">SELECT</span>
+  p.id_paciente,
+  p.nombre,
+  p.apellido,
+  <span class="sf">COUNT</span>(c.id_consulta)  <span class="sk">AS</span> total_consultas,
+  <span class="sf">MAX</span>(c.fecha)         <span class="sk">AS</span> ultima_visita
+<span class="sk">FROM</span> pacientes p
+<span class="sk">INNER JOIN</span> consultas c
+  <span class="sk">ON</span> p.id_paciente = c.id_paciente
+<span class="sk">WHERE</span> c.fecha <span class="sk">>=</span> <span class="sf">DATEADD</span>(<span class="ss">month</span>, <span class="sn">-3</span>, <span class="sf">GETDATE</span>())
+<span class="sk">GROUP BY</span>
+  p.id_paciente, p.nombre, p.apellido
+<span class="sk">HAVING</span> <span class="sf">COUNT</span>(c.id_consulta) <span class="sk">></span> <span class="sn">1</span>
+<span class="sk">ORDER BY</span> total_consultas <span class="sk">DESC</span>;</pre>
+        <div class="sql-query-footer">
+          Identifica pacientes recurrentes del último trimestre. Útil para campañas de retención y seguimiento clínico.
+        </div>
+      </div>
+
+      <!-- Query 2: Agregación -->
+      <div class="sql-query-block">
+        <div class="sql-query-bar">
+          <div class="sql-query-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="sql-query-filename">servicios_demanda.sql</span>
+          <span class="sql-query-tag">GROUP BY</span>
+        </div>
+        <pre class="sql-query-code"><span class="sc">-- Servicios más solicitados por área</span>
+<span class="sk">SELECT</span>
+  s.nombre_servicio,
+  s.area,
+  <span class="sf">COUNT</span>(*)             <span class="sk">AS</span> total_solicitudes,
+  <span class="sf">ROUND</span>(
+    <span class="sf">COUNT</span>(*) * <span class="sn">100.0</span>
+    / <span class="sf">SUM</span>(<span class="sf">COUNT</span>(*)) <span class="sk">OVER</span> (), <span class="sn">2</span>
+  )                    <span class="sk">AS</span> porcentaje
+<span class="sk">FROM</span> solicitudes sol
+<span class="sk">INNER JOIN</span> servicios s
+  <span class="sk">ON</span> sol.id_servicio = s.id_servicio
+<span class="sk">WHERE</span> <span class="sf">YEAR</span>(sol.fecha) = <span class="sf">YEAR</span>(<span class="sf">GETDATE</span>())
+<span class="sk">GROUP BY</span> s.nombre_servicio, s.area
+<span class="sk">ORDER BY</span> total_solicitudes <span class="sk">DESC</span>;</pre>
+        <div class="sql-query-footer">
+          Distribución de demanda por servicio para priorizar contenido y recursos de comunicación interna.
+        </div>
+      </div>
+
+      <!-- Query 3: Subconsulta + window function (ancha) -->
+      <div class="sql-query-block wide">
+        <div class="sql-query-bar">
+          <div class="sql-query-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <span class="sql-query-filename">tendencia_mensual.sql</span>
+          <span class="sql-query-tag">WINDOW FUNCTION</span>
+        </div>
+        <pre class="sql-query-code"><span class="sc">-- Tendencia mensual de actividad con variación respecto al mes anterior</span>
+<span class="sk">WITH</span> actividad_mensual <span class="sk">AS</span> (
+  <span class="sk">SELECT</span>
+    <span class="sf">FORMAT</span>(fecha, <span class="ss">'yyyy-MM'</span>)   <span class="sk">AS</span> mes,
+    <span class="sf">COUNT</span>(*)                   <span class="sk">AS</span> total_eventos
+  <span class="sk">FROM</span> eventos
+  <span class="sk">GROUP BY</span> <span class="sf">FORMAT</span>(fecha, <span class="ss">'yyyy-MM'</span>)
+)
+<span class="sk">SELECT</span>
+  mes,
+  total_eventos,
+  <span class="sf">LAG</span>(total_eventos) <span class="sk">OVER</span> (<span class="sk">ORDER BY</span> mes) <span class="sk">AS</span> mes_anterior,
+  total_eventos
+    - <span class="sf">LAG</span>(total_eventos) <span class="sk">OVER</span> (<span class="sk">ORDER BY</span> mes)  <span class="sk">AS</span> variacion_absoluta,
+  <span class="sf">ROUND</span>(
+    (total_eventos - <span class="sf">LAG</span>(total_eventos) <span class="sk">OVER</span> (<span class="sk">ORDER BY</span> mes))
+    * <span class="sn">100.0</span>
+    / <span class="sf">NULLIF</span>(<span class="sf">LAG</span>(total_eventos) <span class="sk">OVER</span> (<span class="sk">ORDER BY</span> mes), <span class="sn">0</span>), <span class="sn">1</span>
+  )                                                   <span class="sk">AS</span> variacion_pct
+<span class="sk">FROM</span> actividad_mensual
+<span class="sk">ORDER BY</span> mes;</pre>
+        <div class="sql-query-footer">
+          Análisis de tendencia mes a mes con variación absoluta y porcentual. Permite detectar estacionalidad y justificar decisiones de campaña.
+        </div>
+      </div>
+
+    </div>
+    <!-- /sql-queries-grid -->
+
+    <!-- Capturas reales -->
+    <p class="sql-queries-label reveal">Capturas de trabajo real</p>
+
+    <div class="sql-capturas-grid reveal">
+
+      <div class="sql-captura" onclick="sqlOpenLightbox('assets/sql-scrip1.jpg')">
+        <img src="assets/sql-scrip1.jpg" alt="Script SQL real 1" loading="lazy" onerror="this.style.display='none'" />
+        <div class="sql-captura-placeholder">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4">
+            <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+          </svg>
+          <span>captura-1.jpg</span>
+        </div>
+        <div class="sql-captura-overlay">
+          <span class="sql-captura-label">Script real · captura 01</span>
+        </div>
+      </div>
+
+      <div class="sql-captura" onclick="sqlOpenLightbox('assets/sql-scrip2.jpg')">
+        <img src="assets/sql-scrip2.jpg" alt="Script SQL real 2" loading="lazy" onerror="this.style.display='none'" />
+        <div class="sql-captura-placeholder">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4">
+            <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+          </svg>
+          <span>captura-2.jpg</span>
+        </div>
+        <div class="sql-captura-overlay">
+          <span class="sql-captura-label">Script real · captura 02</span>
+        </div>
+      </div>
+
+      <div class="sql-captura" onclick="sqlOpenLightbox('assets/sql-scrip3.jpg')">
+        <img src="assets/sql-scrip3.jpg" alt="Script SQL real 3" loading="lazy" onerror="this.style.display='none'" />
+        <div class="sql-captura-placeholder">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4">
+            <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+          </svg>
+          <span>captura-3.jpg</span>
+        </div>
+        <div class="sql-captura-overlay">
+          <span class="sql-captura-label">Script real · captura 03</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Stats de herramientas -->
+    <div class="sql-stats reveal">
+      <div class="sql-stat">
+        <span class="sql-stat-val">SQL <em>·</em></span>
+        <div class="sql-stat-info">
+          <span class="sql-stat-name">Consultas y análisis</span>
+          <span class="sql-stat-sub">SELECT · JOIN · GROUP BY<br />Window functions · CTEs</span>
+        </div>
+      </div>
+      <div class="sql-stat">
+        <span class="sql-stat-val">3<em>+</em></span>
+        <div class="sql-stat-info">
+          <span class="sql-stat-name">Años de práctica</span>
+          <span class="sql-stat-sub">Bases de datos relacionales<br />SQL Server · MySQL</span>
+        </div>
+      </div>
+      <div class="sql-stat">
+        <span class="sql-stat-val"><em>∞</em></span>
+        <div class="sql-stat-info">
+          <span class="sql-stat-name">Decisiones fundamentadas</span>
+          <span class="sql-stat-sub">Marketing · contenido<br />estrategia · priorización</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <section id="sobre">
+  <div class="g-container">
+
+    <!-- Encabezado -->
+    <div class="reveal">
+      <p class="g-eyebrow">Sobre mí</p>
+      <h2 class="g-title">
+        César<br />
+        <em>Juárez</em>
+      </h2>
+    </div>
+
+    <div class="g-rule reveal"></div>
+
+    <!-- Layout foto + bio -->
+    <div class="sb-main reveal">
+
+      <!-- Foto -->
+      <div class="sb-foto-wrap">
+        <div class="sb-foto">
+          <!--
+            INSTRUCCIÓN:
+            Coloca tu foto en assets/cesar.jpg
+            Si no hay imagen, el placeholder se muestra automáticamente.
+          -->
+          <img
+            src="assets/cesar.jpg"
+            alt="César Juárez"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+          <div class="sb-foto-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.3">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            <span>cesar.jpg</span>
+          </div>
+        </div>
+        <div class="sb-foto-label">
+          <span class="sb-foto-nombre">César Juárez</span>
+          <span class="sb-foto-rol">Marketing · Diseño · Datos</span>
+        </div>
+      </div>
+
+      <!-- Texto -->
+      <div class="sb-texto">
+        <p class="sb-bio">
+          Estudiante de Mercadotecnia con interés en crear experiencias digitales
+          que conecten estrategia, diseño y datos. He trabajado en proyectos de
+          comunicación visual, diseño web institucional y análisis de información
+          con SQL, siempre con el objetivo de que cada pieza cumpla una función
+          real dentro de la comunicación.
+        </p>
+
+        <blockquote class="sb-frase">
+          Mi objetivo es construir proyectos digitales que se vean bien,
+          <em>comuniquen claro</em> y funcionen con propósito.
+        </blockquote>
+      </div>
+
+    </div>
+    <!-- /sb-main -->
+
+    <!-- Enfoques profesionales -->
+    <p class="g-eyebrow reveal" style="margin-bottom: 24px;">Áreas de enfoque</p>
+
+    <div class="sb-enfoques reveal">
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">Marketing digital</span>
+      </div>
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">Diseño web</span>
+      </div>
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">Comunicación visual</span>
+      </div>
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">SQL y análisis de datos</span>
+      </div>
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">Organización de contenido</span>
+      </div>
+      <div class="sb-enfoque">
+        <span class="sb-enfoque-dot"></span>
+        <span class="sb-enfoque-txt">Experiencia de usuario</span>
+      </div>
+    </div>
+
+    <!-- Habilidades -->
+    <div class="reveal">
+      <div class="sb-skills-header">
+        <span class="g-label">Herramientas y habilidades</span>
+      </div>
+
+      <div class="sb-skills-wrap">
+        <!-- Web -->
+        <div class="sb-chip" data-cat="web"><span class="sb-chip-dot"></span>WordPress</div>
+        <div class="sb-chip" data-cat="web"><span class="sb-chip-dot"></span>Elementor</div>
+        <div class="sb-chip" data-cat="web"><span class="sb-chip-dot"></span>HTML</div>
+        <div class="sb-chip" data-cat="web"><span class="sb-chip-dot"></span>CSS</div>
+        <div class="sb-chip" data-cat="web"><span class="sb-chip-dot"></span>JavaScript</div>
+        <!-- Data -->
+        <div class="sb-chip" data-cat="data"><span class="sb-chip-dot"></span>SQL</div>
+        <div class="sb-chip" data-cat="data"><span class="sb-chip-dot"></span>Excel</div>
+        <!-- Marketing -->
+        <div class="sb-chip" data-cat="mkt"><span class="sb-chip-dot"></span>Marketing digital</div>
+        <div class="sb-chip" data-cat="mkt"><span class="sb-chip-dot"></span>Comunicación visual</div>
+        <!-- Tools -->
+        <div class="sb-chip" data-cat="tool"><span class="sb-chip-dot"></span>Canva</div>
+      </div>
+
+      <!-- Leyenda de colores -->
+      <div class="sb-leyenda">
+        <div class="sb-leyenda-item">
+          <span class="sb-leyenda-dot" stysle="background:#7899b4"></span>
+          Web
+        </div>
+        <div class="sb-leyenda-item">
+          <span class="sb-leyenda-dot" style="background:#c9a84c"></span>
+          Datos
+        </div>
+        <div class="sb-leyenda-item">
+          <span class="sb-leyenda-dot" style="background:#7a9e7e"></span>
+          Marketing
+        </div>
+        <div class="sb-leyenda-item">
+          <span class="sb-leyenda-dot" style="background:#9b8070"></span>
+          Herramientas
+        </div>
+      </div>
+    </div>
+
+    <!-- Frase de cierre -->
+    <div class="sb-cierre reveal">
+      <p class="sb-cierre-frase">
+        Donde la estrategia se ve bien,<br />
+        el diseño <em>tiene propósito</em><br />
+        y los datos confirman el camino.
+      </p>
+      <div class="sb-cierre-deco">
+        <div class="sb-cierre-linea"></div>
+        <div class="sb-cierre-linea"></div>
+        <div class="sb-cierre-linea"></div>
+      </div>
+    </div>
+
+  </div>
+
+    <section id="contacto">
+
+  <div class="ct-main">
+
+    <!-- eyebrow -->
+    <p class="ct-eyebrow reveal">Conversemos</p>
+
+    <!-- título -->
+    <h2 class="ct-titulo reveal">
+      Construyamos algo<br />con <em>propósito.</em>
+    </h2>
+
+    <!-- subtítulo -->
+    <p class="ct-sub reveal">
+      Estoy abierto a oportunidades donde pueda aportar
+      desde la estrategia, el diseño web, la comunicación
+      visual y el análisis de datos.
+    </p>
+
+    <!-- botones -->
+    <div class="ct-botones" id="ct-botones">
+
+    <div class="ct-actions">
+  <a href="mailto:juarez.cj8@gmail.com" class="ct-btn ct-btn-primary">
+    ✉ Escribir correo
+  </a>
+
+  <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="ct-btn">
+    LinkedIn
+  </a>
+
+  <a href="assets/CV-Cesar-Juarez.pdf" download class="ct-btn">
+    Descargar CV
+  </a>
+
+  <a href="https://github.com/" target="_blank" rel="noopener" class="ct-btn">
+    GitHub
+  </a>
+</div>
+    <!-- /ct-botones -->
+
+    <!-- correo directo -->
+    <a href="mailto:juarez.cj8@gmail.com" class="ct-email reveal">
+      juarez.cj8@gmail.com
+    </a>
+
+  </div>
+  <!-- /ct-main -->
+
+  <!-- línea dorada central -->
+  <div class="ct-rule reveal"></div>
+
+  <!-- footer -->
+  <footer>
+    <p class="ft-firma">
+      César Juárez
+      <span>·</span>Marketing
+      <span>·</span>Diseño Web
+      <span>·</span>Datos
+    </p>
+
+    <nav class="ft-nav">
+      <a href="#hero"     onclick="scrollToHero(event)">Inicio</a>
+      <a href="#genetica">Proyecto</a>
+      <a href="#diseno">Diseño</a>
+      <a href="#datos">SQL</a>
+      <a href="#sobre">Sobre mí</a>
+    </nav>
+
+    <span class="ft-year">© <span id="ft-year"></span></span>
+  </footer>
+
+</section>
+
+
+
+
+  <!-- ─── JAVASCRIPT ─────────────────────────────────────────────────────── -->
+  <script 
+  id="escena1-js">
+
+  // ── Reveal al entrar en viewport ────────────────────────────────────────
+  // Aplica a cualquier .reveal en el documento (Escena 1 y futuras escenas)
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // pequeño delay escalonado si el elemento tiene data-delay
+          const delay = entry.target.dataset.delay || 0;
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+            // la línea dorada animada también usa .visible
+          }, delay);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12 }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    // escalonar elementos consecutivos de forma natural
+    el.dataset.delay = (i % 4) * 80;
+    revealObserver.observe(el);
+  });
+
+    // ── CURSOR PERSONALIZADO ────────────────────────────────────────────────
+    const cursor     = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursor-ring');
+
+    let mouseX = 0, mouseY = 0;
+    let ringX  = 0, ringY  = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top  = mouseY + 'px';
+    });
+
+    // el ring sigue con inercia
+    (function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = ringX + 'px';
+      cursorRing.style.top  = ringY + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+
+    // agrandar cursor en elementos interactivos
+    document.querySelectorAll('button, a, .disciplina').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width  = '16px';
+        cursor.style.height = '16px';
+        cursorRing.style.width  = '52px';
+        cursorRing.style.height = '52px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width  = '10px';
+        cursor.style.height = '10px';
+        cursorRing.style.width  = '36px';
+        cursorRing.style.height = '36px';
+      });
+    });
+
+
+    // ── SCROLL EXPANSION HERO ───────────────────────────────────────────────
+    const mediaWrap    = document.getElementById('hero-media-wrap');
+    const mediaOverlay = document.getElementById('hero-media-overlay');
+    const heroBg       = document.getElementById('hero-bg');
+    const heroName     = document.getElementById('hero-name');
+    const heroRole     = document.getElementById('hero-role');
+    const heroDivider  = document.getElementById('hero-divider');
+    const scrollHint   = document.getElementById('scroll-hint');
+    const heroContent  = document.getElementById('hero-content');
+    const disciplinas  = document.querySelectorAll('.disciplina');
+
+    let scrollProgress    = 0;
+    let mediaFullyExpanded = false;
+    let touchStartY       = 0;
+    let isMobile          = window.innerWidth < 768;
+
+    window.addEventListener('resize', () => { isMobile = window.innerWidth < 768; });
+
+    // valores base
+    const BASE_W = 320, BASE_H = 420;
+    const EXPAND_W = isMobile ? 640 : 1180;
+    const EXPAND_H = isMobile ? 180 : 380;
+
+    function getExpansion() {
+      return {
+        w: isMobile ? 640 : 1180,
+        h: isMobile ? 180 : 380,
+        spread: isMobile ? 170 : 140,
+      };
+    }
+
+    function applyProgress(p) {
+      const { w, h, spread } = getExpansion();
+
+      // tamaño del media
+      const mw = BASE_W + p * w;
+      const mh = BASE_H + p * h;
+      mediaWrap.style.width  = Math.min(mw, window.innerWidth * 0.96) + 'px';
+      mediaWrap.style.height = Math.min(mh, window.innerHeight * 0.88) + 'px';
+
+      // overlay del media
+      mediaOverlay.style.opacity = 1 - p * 0.65;
+
+      // fondo: fade out
+      heroBg.style.opacity = 1 - p;
+
+      // separación de textos
+      const tx = p * spread;
+      heroName.style.transform  = `translateX(-${tx}vw)`;
+      heroRole.style.transform  = `translateX(${tx}vw)`;
+
+      // divisor dorado: crece
+      heroDivider.style.width   = (120 + p * 200) + 'px';
+      heroDivider.style.opacity = 0.6 + p * 0.4;
+
+      // hint de scroll: desaparece rápido
+      scrollHint.style.opacity = Math.max(0, 1 - p * 5);
+
+      // borde del media: más visible al expandir
+      const borderAlpha = 0.15 + p * 0.3;
+      mediaWrap.style.boxShadow =
+        `0 0 0 1px rgba(201,168,76,${borderAlpha}), 0 40px 120px rgba(0,0,0,${0.4 + p * 0.3})`;
+    }
+
+    function showPostContent() {
+      heroContent.classList.add('visible');
+      disciplinas.forEach((d, i) => {
+        setTimeout(() => d.classList.add('appear'), 100 + i * 120);
+      });
+    }
+
+    function hidePostContent() {
+      heroContent.classList.remove('visible');
+      disciplinas.forEach(d => d.classList.remove('appear'));
+    }
+
+    // ── Wheel ───────────────────────────────────────────────────────────────
+    window.addEventListener('wheel', e => {
+      // si ya está expandido y scrollea hacia arriba desde el tope → colapsar
+      if (mediaFullyExpanded && e.deltaY < 0 && window.scrollY <= 5) {
+        mediaFullyExpanded = false;
+        scrollProgress = 1;
+        hidePostContent();
+        e.preventDefault();
+        return;
+      }
+
+      if (!mediaFullyExpanded) {
+        e.preventDefault();
+        const delta = e.deltaY * 0.0009;
+        scrollProgress = Math.min(Math.max(scrollProgress + delta, 0), 1);
+        applyProgress(scrollProgress);
+
+        if (scrollProgress >= 1) {
+          mediaFullyExpanded = true;
+          showPostContent();
+        } else if (scrollProgress < 0.75) {
+          hidePostContent();
+        }
+      }
+    }, { passive: false });
+
+    // ── Touch ───────────────────────────────────────────────────────────────
+    window.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: false });
+
+    window.addEventListener('touchmove', e => {
+      if (!touchStartY) return;
+      const deltaY = touchStartY - e.touches[0].clientY;
+
+      if (mediaFullyExpanded && deltaY < -20 && window.scrollY <= 5) {
+        mediaFullyExpanded = false;
+        hidePostContent();
+        e.preventDefault();
+        return;
+      }
+
+      if (!mediaFullyExpanded) {
+        e.preventDefault();
+        const factor = deltaY < 0 ? 0.008 : 0.005;
+        scrollProgress = Math.min(Math.max(scrollProgress + deltaY * factor, 0), 1);
+        applyProgress(scrollProgress);
+
+        if (scrollProgress >= 1) {
+          mediaFullyExpanded = true;
+          showPostContent();
+        } else if (scrollProgress < 0.75) {
+          hidePostContent();
+        }
+        touchStartY = e.touches[0].clientY;
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => { touchStartY = 0; });
+
+    // evitar scroll nativo mientras no está expandido
+    window.addEventListener('scroll', () => {
+      if (!mediaFullyExpanded) window.scrollTo(0, 0);
+    });
+
+    // ── Estado inicial ──────────────────────────────────────────────────────
+    applyProgress(0);
+    // ── Filtro de categorías ────────────────────────────────────────────────
+  const filterBtns    = document.querySelectorAll('.d-filter-btn');
+  const categories    = document.querySelectorAll('.d-category');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.filter;
+
+      // estado activo del botón
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // mostrar / ocultar categorías
+      categories.forEach(cat => {
+        if (target === 'all' || cat.dataset.category === target) {
+          cat.classList.remove('hidden');
+        } else {
+          cat.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // ── Lightbox ────────────────────────────────────────────────────────────
+  const lightbox      = document.getElementById('d-lightbox');
+  const lightboxImg   = document.getElementById('d-lightbox-img');
+  const lightboxClose = document.getElementById('d-lightbox-close');
+
+  document.querySelectorAll('.d-piece').forEach(piece => {
+    piece.addEventListener('click', () => {
+      const src = piece.dataset.src;
+      if (!src) return;
+      lightboxImg.src = src;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { lightboxImg.src = ''; }, 350);
+  }
+
+  // cursor personalizado también en piezas nuevas
+  document.querySelectorAll('.d-piece, .d-filter-btn, #d-lightbox-close').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '16px';
+      cursor.style.height = '16px';
+      cursorRing.style.width  = '52px';
+      cursorRing.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width  = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+  // Lightbox reutiliza el de la Escena 2 (#d-lightbox)
+  function sqlOpenLightbox(src) {
+    const lb  = document.getElementById('d-lightbox');
+    const img = document.getElementById('d-lightbox-img');
+    if (!lb || !img) return;
+    img.src = src;
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Cursor personalizado en capturas SQL
+  document.querySelectorAll('.sql-captura').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '16px';
+      cursor.style.height = '16px';
+      cursorRing.style.width  = '52px';
+      cursorRing.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width  = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+
+  // El revealObserver ya está activo desde la Escena 1
+  // y cubre automáticamente los nuevos .reveal de esta escena.
+// Cursor en chips y enfoques
+  document.querySelectorAll('.sb-chip, .sb-enfoque, .sb-foto').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '14px';
+      cursor.style.height = '14px';
+      cursorRing.style.width  = '44px';
+      cursorRing.style.height = '44px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width  = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+
+  // Año dinámico en el footer
+  document.getElementById('ft-year').textContent = new Date().getFullYear();
+
+  // Stagger de botones al entrar en viewport
+  const botonesWrap = document.getElementById('ct-botones');
+  const btns = botonesWrap ? botonesWrap.querySelectorAll('.ct-btn-primary, .ct-btn') : [];
+
+  const botonesObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        btns.forEach((btn, i) => {
+          setTimeout(() => btn.classList.add('appear'), i * 90);
+        });
+        botonesObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (botonesWrap) botonesObserver.observe(botonesWrap);
+
+  // Scroll suave al hero (el hero usa expand, no scroll nativo)
+  function scrollToHero(e) {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Cursor en botones de contacto y footer
+  document.querySelectorAll(
+    '.ct-btn-primary, .ct-btn, .ct-email, .ft-nav a'
+  ).forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width  = '16px';
+      cursor.style.height = '16px';
+      cursorRing.style.width  = '52px';
+      cursorRing.style.height = '52px';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width  = '10px';
+      cursor.style.height = '10px';
+      cursorRing.style.width  = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+  </script>
+</body>
+</html>
