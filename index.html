@@ -99,7 +99,8 @@
     #hero-bg-veil {
       position: absolute;
       inset: 0;
-      background: rgba(8,8,8,0.68);
+       background: rgba(8,8,8,0.88);
+
     }
     #hero-bg-vignette {
       position: absolute;
@@ -158,7 +159,7 @@ display: block !important;
       line-height: 1;
       letter-spacing: -0.01em;
       color: var(--cream);
-      text-shadow: 0 2px 50px rgba(0,0,0,0.7);
+      text-shadow: 0 3px 18px rgba(0,0,0,0.9);
       will-change: transform;
     }
 
@@ -241,7 +242,7 @@ display: block !important;
       font-style: italic;
       font-size: clamp(1rem, 2vw, 1.3rem);
       font-weight: 300;
-      color: var(--dim);
+      color: rgba(255,255,255,0.90);
       line-height: 1.65;
       margin-bottom: 72px;
       max-width: 520px;
@@ -268,6 +269,7 @@ display: block !important;
       opacity: 0;
       transform: translateY(16px);
       transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+      
     }
     .disciplina:last-child { border-right: none; }
     .disciplina:hover { background: rgba(201,168,76,0.04); }
@@ -311,7 +313,7 @@ display: block !important;
     .disciplina-desc {
       font-size: 0.78rem;
       line-height: 1.7;
-      color: var(--dim);
+      color: rgba(255,255,255,0.85);
     }
 
     /* CTA */
@@ -1016,7 +1018,475 @@ display: block !important;
     background: var(--gold);
     opacity: 0.3;
   }
+@keyframes floatMac {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
 
+#hero-bg img {
+  animation: floatMac 6s ease-in-out infinite;
+
+}
+@media (max-width: 1200px) {
+
+  /* Hero */
+  #hero-name  { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+  #hero-role  { font-size: clamp(0.55rem, 1.4vw, 0.85rem); }
+
+  /* Contenedor global */
+  .g-container { padding: 0 36px; }
+
+  /* SQL queries */
+  .sql-query-code { font-size: 0.68rem; }
+
+  /* Contacto */
+  .ct-titulo { font-size: clamp(2.2rem, 6vw, 4.8rem); }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BREAKPOINT 992px — tablets landscape, grids de 3 → 2 columnas
+───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 992px) {
+
+  /* ── Contenedor ─────────────────────────────────────────────────────── */
+  .g-container { padding: 0 28px; }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  #hero-content { padding: 60px 28px 100px; }
+
+  #disciplinas {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* la tercera disciplina ocupa ancho completo */
+  .disciplina:nth-child(3) {
+    grid-column: 1 / -1;
+    border-right: none;
+  }
+
+  /* ── Genética ───────────────────────────────────────────────────────── */
+  #genetica { padding: 100px 0 120px; }
+
+  .g-context-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  .g-two-col { grid-template-columns: 1fr; }
+  .g-two-col .g-card:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+
+  .g-metrics { grid-template-columns: 1fr 1fr; }
+
+  /* galería genética */
+  .g-gallery { grid-template-columns: repeat(6, 1fr); }
+  .g-img:nth-child(1) { grid-column: span 6; aspect-ratio: 16/8; }
+  .g-img:nth-child(2) { grid-column: span 3; }
+  .g-img:nth-child(3) { grid-column: span 3; }
+  .g-img:nth-child(4) { grid-column: span 2; }
+  .g-img:nth-child(5) { grid-column: span 2; }
+  .g-img:nth-child(6) { grid-column: span 2; }
+
+  /* ── Diseño ──────────────────────────────────────────────────────────── */
+  #diseno { padding: 100px 0 120px; }
+
+  .d-intro-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  .d-filter {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .d-filter-btn {
+    flex: 1 1 calc(50% - 1px);
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .d-filter-btn:nth-child(3),
+  .d-filter-btn:nth-child(4) { border-bottom: none; }
+
+  /* grids diseño → 2 columnas */
+  .d-grid-square { grid-template-columns: repeat(2, 1fr); }
+
+  .d-grid-social { grid-template-columns: repeat(2, 1fr); }
+  .d-grid-social .d-piece:nth-child(n) { grid-column: span 1; aspect-ratio: 1/1; }
+  .d-grid-social .d-piece:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+
+  .d-grid-inst { grid-template-columns: repeat(2, 1fr); }
+  .d-grid-inst .d-piece:nth-child(n) { grid-column: span 1; aspect-ratio: 1/1; }
+  .d-grid-inst .d-piece:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; }
+
+  /* ── SQL ────────────────────────────────────────────────────────────── */
+  #datos { padding: 100px 0 120px; }
+
+  .sql-intro { grid-template-columns: 1fr; gap: 16px; }
+
+  .sql-tipos { grid-template-columns: 1fr 1fr; }
+  .sql-tipos .sql-tipo:last-child { grid-column: span 2; }
+
+  .sql-queries-grid { grid-template-columns: 1fr; }
+  .sql-query-block.wide { grid-column: span 1; }
+
+  .sql-capturas-grid { grid-template-columns: 1fr 1fr; }
+  .sql-capturas-grid .sql-captura:nth-child(3) { grid-column: span 2; }
+
+  .sql-stats { grid-template-columns: 1fr 1fr; }
+  .sql-stats .sql-stat:last-child { grid-column: span 2; }
+
+  /* ── Sobre mí ───────────────────────────────────────────────────────── */
+  #sobre { padding: 100px 0 120px; }
+
+  .sb-main { grid-template-columns: 220px 1fr; gap: 40px; }
+
+  .sb-enfoques { grid-template-columns: repeat(2, 1fr); }
+
+  /* ── Contacto ───────────────────────────────────────────────────────── */
+  .ct-titulo { font-size: clamp(2rem, 5.5vw, 4rem); }
+
+  footer { padding: 32px 28px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BREAKPOINT 768px — tablets portrait, layouts verticales
+───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* ── Cursor: ocultar en touch ──────────────────────────────────────── */
+  #cursor, #cursor-ring { display: none; }
+  body { cursor: auto; }
+  button, a { cursor: pointer; }
+
+  /* ── Contenedor ─────────────────────────────────────────────────────── */
+  .g-container { padding: 0 20px; }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  #hero-content { padding: 48px 20px 80px; }
+  #hero-tagline { margin-bottom: 48px; }
+
+  #disciplinas {
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--border);
+  }
+  .disciplina {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    padding: 32px 24px;
+  }
+  .disciplina:last-child { border-bottom: none; }
+  .disciplina:nth-child(3) { grid-column: auto; }
+
+  /* ── Títulos globales ────────────────────────────────────────────────── */
+  .g-title { font-size: clamp(2.2rem, 8vw, 3.5rem); }
+
+  /* regla animada */
+  .g-rule { margin: 48px 0; }
+
+  /* ── Genética ───────────────────────────────────────────────────────── */
+  #genetica { padding: 80px 0 100px; }
+
+  .g-card { padding: 36px 24px; }
+
+  .g-metrics { grid-template-columns: 1fr 1fr; }
+  .g-metric { padding: 32px 20px; }
+
+  /* galería genética → 2 columnas */
+  .g-gallery { grid-template-columns: 1fr 1fr; gap: 3px; }
+  .g-img:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+  .g-img:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+
+  /* ── Diseño ──────────────────────────────────────────────────────────── */
+  #diseno { padding: 80px 0 100px; }
+
+  .d-filter {
+    flex-direction: column;
+    width: 100%;
+  }
+  .d-filter-btn {
+    flex: none;
+    width: 100%;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    padding: 14px 20px;
+  }
+  .d-filter-btn:last-child { border-bottom: none; }
+
+  .d-category { margin-bottom: 64px; }
+
+  .d-grid-square { grid-template-columns: 1fr 1fr; gap: 3px; }
+
+  .d-grid-social { grid-template-columns: 1fr 1fr; gap: 3px; }
+  .d-grid-social .d-piece:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+  .d-grid-social .d-piece:nth-child(n+2) { grid-column: span 1; aspect-ratio: 1/1; }
+
+  .d-grid-inst { grid-template-columns: 1fr 1fr; gap: 3px; }
+  .d-grid-inst .d-piece:nth-child(n) { grid-column: span 1; aspect-ratio: 1/1; }
+  .d-grid-inst .d-piece:nth-child(4) { grid-column: span 2; aspect-ratio: 16/9; }
+
+  /* ── SQL ────────────────────────────────────────────────────────────── */
+  #datos { padding: 80px 0 100px; }
+
+  .sql-tipos { grid-template-columns: 1fr; }
+  .sql-tipos .sql-tipo:last-child { grid-column: span 1; }
+
+  .sql-tipo { padding: 32px 24px; }
+
+  .sql-query-code {
+    font-size: 0.64rem;
+    padding: 20px 16px;
+    /* scroll horizontal limpio en mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+  .sql-query-bar { padding: 10px 16px; }
+  .sql-query-footer { padding: 14px 16px 16px; font-size: 0.68rem; }
+  .sql-query-filename { display: none; } /* evita overflow en bar estrecha */
+
+  .sql-capturas-grid { grid-template-columns: 1fr; }
+  .sql-capturas-grid .sql-captura:nth-child(3) { grid-column: span 1; }
+  .sql-captura { aspect-ratio: 16/9; }
+
+  .sql-stats { grid-template-columns: 1fr; }
+  .sql-stats .sql-stat:last-child { grid-column: span 1; }
+  .sql-stat { padding: 24px 20px; }
+  .sql-stat-val { font-size: clamp(1.8rem, 6vw, 2.6rem); }
+
+  /* ── Sobre mí ───────────────────────────────────────────────────────── */
+  #sobre { padding: 80px 0 100px; }
+
+  .sb-main {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .sb-foto-wrap { max-width: 240px; } /* foto no gigante en vertical */
+
+  .sb-enfoques { grid-template-columns: 1fr 1fr; }
+  .sb-enfoque  { padding: 24px 20px; }
+
+  .sb-skills-wrap { gap: 8px; }
+  .sb-chip { padding: 9px 16px; font-size: 0.64rem; }
+
+  .sb-leyenda { margin-top: -52px; gap: 16px; }
+
+  .sb-cierre { grid-template-columns: 1fr; gap: 20px; }
+  .sb-cierre-deco { flex-direction: row; align-items: center; }
+  .sb-cierre-linea { width: 28px !important; height: 1px; }
+
+  /* ── Contacto ───────────────────────────────────────────────────────── */
+  #contacto { min-height: auto; }
+  .ct-main { padding: 80px 20px 60px; }
+
+  .ct-titulo { font-size: clamp(1.9rem, 8vw, 3rem); margin-bottom: 24px; }
+  .ct-sub    { font-size: 1rem; margin-bottom: 48px; }
+
+  .ct-botones {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    max-width: 320px;
+  }
+  .ct-btn-primary,
+  .ct-btn {
+    justify-content: center;
+    padding: 18px 24px;  /* área de toque mínima 44px */
+    font-size: 0.7rem;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px 20px;
+    gap: 20px;
+  }
+  .ft-nav { flex-wrap: wrap; gap: 16px; }
+  .ft-nav a { font-size: 0.6rem; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   BREAKPOINT 576px — móviles pequeños
+───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+
+  /* ── Contenedor ─────────────────────────────────────────────────────── */
+  .g-container { padding: 0 16px; }
+
+  /* ── Hero ───────────────────────────────────────────────────────────── */
+  #hero-name { font-size: clamp(2.2rem, 11vw, 3.2rem); }
+  #hero-role { font-size: 0.5rem; letter-spacing: 0.2em; }
+
+  #hero-content { padding: 36px 16px 64px; }
+  #hero-tagline {
+    font-size: 1rem;
+    margin-bottom: 40px;
+  }
+
+  /* disciplinas ya en 1 columna desde 768, solo ajustar padding */
+  .disciplina { padding: 28px 16px; }
+  .disciplina-titulo { font-size: 1.6rem; }
+
+  /* ── Títulos ─────────────────────────────────────────────────────────── */
+  .g-title { font-size: clamp(1.9rem, 10vw, 2.8rem); }
+  .g-body  { font-size: 1rem; }
+
+  /* ── Genética ───────────────────────────────────────────────────────── */
+  #genetica { padding: 64px 0 80px; }
+
+  .g-card-titulo { font-size: 1.3rem; }
+  .g-card-body   { font-size: 0.75rem; }
+
+  .g-metrics { grid-template-columns: 1fr 1fr; }
+  .g-metric  { padding: 24px 12px; }
+  .g-metric-value { font-size: clamp(2rem, 8vw, 3rem); }
+  .g-metric-label { font-size: 0.55rem; }
+
+  /* galería → 1 columna en los más pequeños */
+  .g-gallery { grid-template-columns: 1fr; gap: 3px; }
+  .g-img:nth-child(n) { grid-column: span 1; aspect-ratio: 16/9; }
+
+  /* ── Diseño ──────────────────────────────────────────────────────────── */
+  #diseno { padding: 64px 0 80px; }
+
+  /* grids → 1 columna */
+  .d-grid-square { grid-template-columns: 1fr; }
+  .d-grid-square .d-piece { aspect-ratio: 4/3; }
+
+  .d-grid-social { grid-template-columns: 1fr; }
+  .d-grid-social .d-piece:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+
+  .d-grid-inst { grid-template-columns: 1fr; }
+  .d-grid-inst .d-piece:nth-child(n) { grid-column: span 1; aspect-ratio: 4/3; }
+
+  .d-category-desc { font-size: 0.72rem; }
+
+  /* ── SQL ────────────────────────────────────────────────────────────── */
+  #datos { padding: 64px 0 80px; }
+
+  .sql-queries-label { font-size: 0.55rem; }
+  .sql-query-code    { font-size: 0.6rem; line-height: 1.65; padding: 16px 14px; }
+  .sql-query-tag     { display: none; } /* evita overflow en bar estrecha */
+
+  .sql-capturas-grid { grid-template-columns: 1fr; }
+  .sql-captura       { aspect-ratio: 16/9; }
+
+  .sql-stats { grid-template-columns: 1fr; }
+  .sql-stat  { padding: 20px 16px; gap: 14px; }
+
+  /* ── Sobre mí ───────────────────────────────────────────────────────── */
+  #sobre { padding: 64px 0 80px; }
+
+  .sb-foto-wrap  { max-width: 180px; }
+  .sb-bio        { font-size: 1rem; line-height: 1.75; }
+  .sb-frase      { font-size: 1rem; padding-left: 20px; }
+
+  .sb-enfoques { grid-template-columns: 1fr; }
+  .sb-enfoque  { padding: 20px 16px; }
+
+  .sb-chip { padding: 8px 14px; font-size: 0.62rem; }
+
+  .sb-cierre-frase { font-size: clamp(1.3rem, 6vw, 2rem); }
+
+  /* ── Contacto ───────────────────────────────────────────────────────── */
+  .ct-main      { padding: 64px 16px 48px; }
+  .ct-eyebrow   { font-size: 0.52rem; letter-spacing: 0.28em; }
+  .ct-titulo    { font-size: clamp(1.7rem, 9vw, 2.6rem); margin-bottom: 20px; }
+  .ct-sub       { font-size: 0.95rem; margin-bottom: 40px; }
+  .ct-email     { font-size: 0.62rem; }
+
+  .ct-botones   { max-width: 100%; }
+  .ct-btn-primary,
+  .ct-btn       { padding: 16px 20px; font-size: 0.65rem; }
+
+  footer        { padding: 24px 16px; gap: 16px; }
+  .ft-firma     { font-size: 0.82rem; }
+  .ft-nav       { gap: 12px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AJUSTES TOUCH UNIVERSALES
+   Garantizan área mínima de toque (44×44px) en todos los dispositivos
+───────────────────────────────────────────────────────────────────────── */
+@media (hover: none) and (pointer: coarse) {
+
+  /* Sin efectos hover que confundan en touch */
+  .disciplina:hover,
+  .g-card:hover,
+  .sql-tipo:hover,
+  .sb-enfoque:hover,
+  .d-piece:hover img,
+  .g-img:hover img,
+  .sql-captura:hover img {
+    transform: none;
+    filter: none;
+    background: inherit;
+  }
+
+  /* Líneas hover → siempre visibles en touch (feedback estático) */
+  .disciplina::after,
+  .g-card::after,
+  .sql-tipo::after,
+  .sb-enfoque::after { width: 0; } /* desactivar línea en touch */
+
+  /* Imágenes sin filtro en touch */
+  .d-piece img,
+  .g-img img,
+  .sql-captura img {
+    filter: none;
+    transform: none;
+  }
+
+  /* Área mínima de toque en chips */
+  .sb-chip {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Botones de contacto con área mínima garantizada */
+  .ct-btn-primary,
+  .ct-btn {
+    min-height: 52px;
+  }
+
+  /* Filtros de diseño */
+  .d-filter-btn {
+    min-height: 48px;
+  }
+
+  /* Links del footer */
+  .ft-nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Scroll horizontal en código SQL sin rebote */
+  .sql-query-code {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   HERO: ajuste específico de la expansión en mobile
+   Evita que el texto quede detrás de la imagen expandida
+───────────────────────────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+  #hero-text {
+    /* en móviles muy pequeños bajar ligeramente para no solapar con el hint */
+    top: 45%;
+  }
+  #scroll-hint {
+    bottom: 28px;
+  }
+  /* el hint de texto cabe en una línea */
+  #scroll-hint span {
+    font-size: 0.52rem;
+    letter-spacing: 0.22em;
+  }
+}
   </style>
   <style id="escena2-css">
 
@@ -2002,14 +2472,13 @@ display: block !important;
         Coloca el archivo en:  assets/hero-bg.jpg
         Sugerencia:            usa seccion1-medicos.jpg o seccion2-medicos.jpg
       -->
-      <img src="assets/hero-bg.jpg" alt="" aria-hidden="true" />
-      <div id="hero-bg-veil"></div>
+<img src="assets/macbook.jpg" class="hero-mac" alt="" aria-hidden="true" />      <div id="hero-bg-veil"></div>
       <div id="hero-bg-vignette"></div>
     </div>
 
     <!-- Imagen central expansiva -->
 <div id="hero-media-wrap">
-  <img src="./assets/hero-media.jpg" alt="Proyecto principal" />
+  <img src="./assets/Diseño sin título (2).png" alt="Proyecto principal" />
   <div id="hero-media-overlay"></div>
 </div>      <!--
         INSTRUCCIÓN DE IMAGEN:
@@ -2866,15 +3335,15 @@ display: block !important;
     ✉ Escribir correo
   </a>
 
-  <a href="https://www.linkedin.com/" target="_blank" rel="noopener" class="ct-btn">
+  <a href="https://www.linkedin.com/in/c%C3%A9sar-ju%C3%A1rez-074998275/" target="_blank" rel="noopener" class="ct-btn">
     LinkedIn
   </a>
 
-  <a href="assets/CV-Cesar-Juarez.pdf" download class="ct-btn">
+  <a href="assets/CV (5).pdf" download class="ct-btn">
     Descargar CV
   </a>
 
-  <a href="https://github.com/" target="_blank" rel="noopener" class="ct-btn">
+  <a href="https://juarezcj8-collab.github.io/terminal/" target="_blank" rel="noopener" class="ct-btn">
     GitHub
   </a>
 </div>
